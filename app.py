@@ -399,4 +399,14 @@ def download_sample():
         return redirect(url_for('index'))
 
 if __name__ == '__main__':
-    app.run(debug=True, host='0.0.0.0', port=5000)
+    # Create necessary directories if they don't exist
+    os.makedirs('uploads', exist_ok=True)
+    os.makedirs('outputs', exist_ok=True)
+    os.makedirs('static/plots', exist_ok=True)
+    
+    print("🚀 Starting Data Analyzer Pro...")
+    print("📊 Your web app will be available at: http://localhost:5000")
+    print("🛑 Press Ctrl+C to stop the server")
+    print("=" * 50)
+    
+    app.run(debug=True, host='127.0.0.1', port=5000)
