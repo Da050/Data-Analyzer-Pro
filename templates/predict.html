@@ -1,0 +1,327 @@
+{% extends "base.html" %}
+
+{% block title %}Machine Learning - {{ filename }}{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+    <div class="row">
+        <div class="col-12">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="{{ url_for('index') }}">Home</a></li>
+                    <li class="breadcrumb-item"><a href="#">{{ filename }}</a></li>
+                    <li class="breadcrumb-item active">Machine Learning</li>
+                </ol>
+            </nav>
+        </div>
+    </div>
+
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header bg-primary text-white">
+                    <h4 class="mb-0">
+                        <i class="fas fa-robot"></i> Build Machine Learning Model
+                    </h4>
+                </div>
+                <div class="card-body">
+                    <p class="mb-0">
+                        Configure your machine learning model by selecting features and target variable.
+                        The system will automatically choose the best algorithm based on your data.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="mb-0">
+                        <i class="fas fa-cogs"></i> Model Configuration
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <form method="POST" action="{{ url_for('run_prediction') }}">
+                        <input type="hidden" name="filename" value="{{ filename }}">
+                        
+                        <!-- Feature Selection -->
+                        <div class="mb-4">
+                            <label class="form-label">
+                                <i class="fas fa-list"></i> Select Features (Input Variables)
+                            </label>
+                            <div class="form-text mb-2">
+                                Choose the columns that will be used to make predictions
+                            </div>
+                            
+                            {% if numeric_columns %}
+                            <div class="mb-3">
+                                <h6 class="text-primary">Numeric Features:</h6>
+                                <div class="row">
+                                    {% for column in numeric_columns %}
+                                    <div class="col-md-6 col-lg-4">
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" 
+                                                   name="features" value="{{ column }}" id="feature_{{ loop.index }}">
+                                            <label class="form-check-label" for="feature_{{ loop.index }}">
+                                                <i class="fas fa-hashtag text-primary"></i> {{ column }}
+                                            </label>
+                                        </div>
+                                    </div>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                            {% endif %}
+                            
+                            {% if categorical_columns %}
+                            <div class="mb-3">
+                                <h6 class="text-secondary">Categorical Features:</h6>
+                                <div class="row">
+                                    {% for column in categorical_columns %}
+                                    <div class="col-md-6 col-lg-4">
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" 
+                                                   name="features" value="{{ column }}" id="cat_feature_{{ loop.index }}">
+                                            <label class="form-check-label" for="cat_feature_{{ loop.index }}">
+                                                <i class="fas fa-font text-secondary"></i> {{ column }}
+                                            </label>
+                                        </div>
+                                    </div>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                            {% endif %}
+                            
+                            <button type="button" class="btn btn-outline-primary btn-sm" onclick="selectAllNumeric()">
+                                Select All Numeric
+                            </button>
+                            <button type="button" class="btn btn-outline-secondary btn-sm" onclick="clearSelection()">
+                                Clear All
+                            </button>
+                        </div>
+
+                        <!-- Target Selection -->
+                        <div class="mb-4">
+                            <label for="target" class="form-label">
+                                <i class="fas fa-bullseye"></i> Select Target Variable (What to Predict)
+                            </label>
+                            <select class="form-select" name="target" id="target" required>
+                                <option value="">Choose target variable...</option>
+                                {% for column in all_columns %}
+                                <option value="{{ column }}">{{ column }}</option>
+                                {% endfor %}
+                            </select>
+                            <div class="form-text">
+                                The target variable is what you want to predict
+                            </div>
+                        </div>
+
+                        <!-- Model Type Selection -->
+                        <div class="mb-4">
+                            <label for="model_type" class="form-label">
+                                <i class="fas fa-brain"></i> Model Type
+                            </label>
+                            <select class="form-select" name="model_type" id="model_type">
+                                <option value="auto">Auto (Recommended)</option>
+                                <option value="linear">Linear Regression</option>
+                                <option value="random_forest">Random Forest</option>
+                                <option value="logistic">Logistic Regression</option>
+                            </select>
+                            <div class="form-text">
+                                Auto mode will choose the best algorithm based on your data
+                            </div>
+                        </div>
+
+                        <!-- Submit Button -->
+                        <div class="d-grid">
+                            <button type="submit" class="btn btn-custom btn-lg">
+                                <i class="fas fa-rocket"></i> Train Model & Generate Predictions
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="mb-0">
+                        <i class="fas fa-info-circle"></i> How It Works
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <div class="step-container">
+                        <div class="d-flex align-items-start mb-3">
+                            <div class="step-number">1</div>
+                            <div class="step-content">
+                                <h6>Select Features</h6>
+                                <p class="small text-muted">Choose input variables that might influence your target</p>
+                            </div>
+                        </div>
+                        
+                        <div class="d-flex align-items-start mb-3">
+                            <div class="step-number">2</div>
+                            <div class="step-content">
+                                <h6>Choose Target</h6>
+                                <p class="small text-muted">Select what you want to predict</p>
+                            </div>
+                        </div>
+                        
+                        <div class="d-flex align-items-start mb-3">
+                            <div class="step-number">3</div>
+                            <div class="step-content">
+                                <h6>Train Model</h6>
+                                <p class="small text-muted">Algorithm learns patterns from your data</p>
+                            </div>
+                        </div>
+                        
+                        <div class="d-flex align-items-start">
+                            <div class="step-number">4</div>
+                            <div class="step-content">
+                                <h6>View Results</h6>
+                                <p class="small text-muted">See predictions and model performance</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card mt-3">
+                <div class="card-header">
+                    <h6 class="mb-0">
+                        <i class="fas fa-lightbulb"></i> Tips for Better Models
+                    </h6>
+                </div>
+                <div class="card-body">
+                    <ul class="list-unstyled small">
+                        <li><i class="fas fa-check text-success"></i> Include relevant features only</li>
+                        <li><i class="fas fa-check text-success"></i> Ensure target has variation</li>
+                        <li><i class="fas fa-check text-success"></i> More data = better models</li>
+                        <li><i class="fas fa-check text-success"></i> Remove highly correlated features</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="card mt-3">
+                <div class="card-header">
+                    <h6 class="mb-0">
+                        <i class="fas fa-chart-bar"></i> Available Columns
+                    </h6>
+                </div>
+                <div class="card-body">
+                    <div class="small">
+                        <strong>Numeric ({{ numeric_columns | length }}):</strong>
+                        {% for col in numeric_columns[:3] %}
+                        <span class="badge bg-primary">{{ col }}</span>
+                        {% endfor %}
+                        {% if numeric_columns | length > 3 %}
+                        <span class="text-muted">+{{ numeric_columns | length - 3 }} more</span>
+                        {% endif %}
+                    </div>
+                    
+                    <div class="small mt-2">
+                        <strong>Categorical ({{ categorical_columns | length }}):</strong>
+                        {% for col in categorical_columns[:3] %}
+                        <span class="badge bg-secondary">{{ col }}</span>
+                        {% endfor %}
+                        {% if categorical_columns | length > 3 %}
+                        <span class="text-muted">+{{ categorical_columns | length - 3 }} more</span>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+.step-number {
+    background: linear-gradient(45deg, #007bff, #0056b3);
+    color: white;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    margin-right: 15px;
+    flex-shrink: 0;
+}
+
+.step-content h6 {
+    margin-bottom: 5px;
+}
+</style>
+
+<script>
+function selectAllNumeric() {
+    const numericCheckboxes = document.querySelectorAll('input[type="checkbox"][name="features"]');
+    const numericColumns = {{ numeric_columns | tojson }};
+    
+    numericCheckboxes.forEach(checkbox => {
+        if (numericColumns.includes(checkbox.value)) {
+            checkbox.checked = true;
+        }
+    });
+}
+
+function clearSelection() {
+    const checkboxes = document.querySelectorAll('input[type="checkbox"][name="features"]');
+    checkboxes.forEach(checkbox => {
+        checkbox.checked = false;
+    });
+}
+
+// Auto-select model type based on target
+document.getElementById('target').addEventListener('change', function() {
+    const target = this.value;
+    const numericColumns = {{ numeric_columns | tojson }};
+    const modelTypeSelect = document.getElementById('model_type');
+    
+    if (numericColumns.includes(target)) {
+        // Numeric target - regression
+        modelTypeSelect.innerHTML = `
+            <option value="auto">Auto (Recommended)</option>
+            <option value="linear">Linear Regression</option>
+            <option value="random_forest">Random Forest Regression</option>
+        `;
+    } else {
+        // Categorical target - classification
+        modelTypeSelect.innerHTML = `
+            <option value="auto">Auto (Recommended)</option>
+            <option value="random_forest">Random Forest Classification</option>
+            <option value="logistic">Logistic Regression</option>
+        `;
+    }
+});
+
+// Form validation
+document.querySelector('form').addEventListener('submit', function(e) {
+    const selectedFeatures = document.querySelectorAll('input[type="checkbox"][name="features"]:checked');
+    const target = document.getElementById('target').value;
+    
+    if (selectedFeatures.length === 0) {
+        e.preventDefault();
+        alert('Please select at least one feature.');
+        return;
+    }
+    
+    if (!target) {
+        e.preventDefault();
+        alert('Please select a target variable.');
+        return;
+    }
+    
+    // Check if target is also selected as feature
+    const featureValues = Array.from(selectedFeatures).map(cb => cb.value);
+    if (featureValues.includes(target)) {
+        e.preventDefault();
+        alert('Target variable cannot be used as a feature. Please unselect it from features.');
+        return;
+    }
+});
+</script>
+{% endblock %}

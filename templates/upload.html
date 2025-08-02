@@ -1,0 +1,136 @@
+{% extends "base.html" %}
+
+{% block title %}Upload Data - DataAnalyzer Pro{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header bg-primary text-white">
+                    <h4 class="mb-0">
+                        <i class="fas fa-upload"></i> Upload Your Dataset
+                    </h4>
+                </div>
+                <div class="card-body">
+                    <form method="POST" enctype="multipart/form-data">
+                        <div class="mb-4">
+                            <label for="file" class="form-label">Select Data File</label>
+                            <input type="file" class="form-control" id="file" name="file" 
+                                   accept=".csv,.xlsx,.xls" required>
+                            <div class="form-text">
+                                Supported formats: CSV, Excel (XLS, XLSX). Max file size: 16MB
+                            </div>
+                        </div>
+
+                        <div class="d-grid gap-2">
+                            <button type="submit" class="btn btn-custom btn-lg">
+                                <i class="fas fa-upload"></i> Upload and Analyze
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <div class="mt-4">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="card">
+                            <div class="card-body text-center">
+                                <i class="fas fa-database fa-2x text-info mb-3"></i>
+                                <h6>Don't have data?</h6>
+                                <p class="text-muted small">Try our sample dataset</p>
+                                <a href="{{ url_for('generate_sample') }}" class="btn btn-outline-info btn-sm">
+                                    Generate Sample Data
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="card">
+                            <div class="card-body text-center">
+                                <i class="fas fa-download fa-2x text-success mb-3"></i>
+                                <h6>Need example data?</h6>
+                                <p class="text-muted small">Download sample CSV</p>
+                                <a href="{{ url_for('download_sample') }}" class="btn btn-outline-success btn-sm">
+                                    Download Sample
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mt-4">
+                <div class="card">
+                    <div class="card-header">
+                        <h6 class="mb-0">
+                            <i class="fas fa-info-circle"></i> What happens after upload?
+                        </h6>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <h6><i class="fas fa-chart-bar text-primary"></i> Automatic Analysis</h6>
+                                <ul class="list-unstyled small">
+                                    <li>• Basic statistics</li>
+                                    <li>• Data quality assessment</li>
+                                    <li>• Missing value detection</li>
+                                    <li>• Correlation analysis</li>
+                                </ul>
+                            </div>
+                            <div class="col-md-6">
+                                <h6><i class="fas fa-chart-pie text-success"></i> Visualizations</h6>
+                                <ul class="list-unstyled small">
+                                    <li>• Distribution plots</li>
+                                    <li>• Correlation heatmaps</li>
+                                    <li>• Box plots</li>
+                                    <li>• Scatter plots</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mt-4">
+                <div class="alert alert-info">
+                    <h6><i class="fas fa-lightbulb"></i> Tips for best results:</h6>
+                    <ul class="mb-0 small">
+                        <li>Ensure your data has column headers</li>
+                        <li>Remove any sensitive information before upload</li>
+                        <li>CSV files with UTF-8 encoding work best</li>
+                        <li>Include at least 50 rows for meaningful analysis</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+document.getElementById('file').addEventListener('change', function(e) {
+    const file = e.target.files[0];
+    if (file) {
+        const fileName = file.name;
+        const fileSize = (file.size / 1024 / 1024).toFixed(2);
+        
+        // Create preview
+        const preview = document.createElement('div');
+        preview.className = 'alert alert-success mt-2';
+        preview.innerHTML = `
+            <i class="fas fa-file-alt"></i> Selected: <strong>${fileName}</strong> (${fileSize} MB)
+        `;
+        
+        // Remove existing preview
+        const existingPreview = document.querySelector('.alert-success');
+        if (existingPreview) {
+            existingPreview.remove();
+        }
+        
+        // Add new preview
+        e.target.parentNode.appendChild(preview);
+    }
+});
+</script>
+{% endblock %}

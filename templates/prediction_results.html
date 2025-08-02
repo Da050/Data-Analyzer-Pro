@@ -1,0 +1,377 @@
+{% extends "base.html" %}
+
+{% block title %}Prediction Results - {{ filename }}{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+    <div class="row">
+        <div class="col-12">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="{{ url_for('index') }}">Home</a></li>
+                    <li class="breadcrumb-item"><a href="#">{{ filename }}</a></li>
+                    <li class="breadcrumb-item active">Prediction Results</li>
+                </ol>
+            </nav>
+        </div>
+    </div>
+
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header bg-success text-white">
+                    <h4 class="mb-0">
+                        <i class="fas fa-check-circle"></i> Model Training Complete!
+                    </h4>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <h6>Model Configuration:</h6>
+                            <ul class="list-unstyled">
+                                <li><strong>Algorithm:</strong> {{ model_type.title() }}</li>
+                                <li><strong>Target Variable:</strong> <span class="badge bg-primary">{{ target_column }}</span></li>
+                                <li><strong>Features Used:</strong> {{ feature_columns | length }}</li>
+                                <li><strong>Model Type:</strong> 
+                                    {% if performance.model_type == 'classification' %}
+                                    <span class="badge bg-info">Classification</span>
+                                    {% else %}
+                                    <span class="badge bg-warning">Regression</span>
+                                    {% endif %}
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="col-md-6">
+                            <h6>Performance Metrics:</h6>
+                            {% if performance.model_type == 'regression' %}
+                            <ul class="list-unstyled">
+                                <li><strong>R² Score:</strong> <span class="badge bg-success">{{ "%.4f"|format(performance.r2_score) }}</span></li>
+                                <li><strong>RMSE:</strong> {{ "%.2f"|format(performance.rmse) }}</li>
+                                <li><strong>MSE:</strong> {{ "%.2f"|format(performance.mse) }}</li>
+                            </ul>
+                            {% else %}
+                            <ul class="list-unstyled">
+                                <li><strong>Accuracy:</strong> <span class="badge bg-success">{{ "%.4f"|format(performance.accuracy) }}</span></li>
+                                <li><strong>Model Type:</strong> Classification</li>
+                            </ul>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Performance Summary -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="mb-0">
+                        <i class="fas fa-tachometer-alt"></i> Model Performance Summary
+                    </h5>
+                </div>
+                <div class="card-body">
+                    {% if performance.model_type == 'regression' %}
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="stats-card text-center">
+                                <h2 class="text-primary">{{ "%.1f"|format(performance.r2_score * 100) }}%</h2>
+                                <p class="text-muted mb-0">R² Score</p>
+                                <small class="text-muted">Variance Explained</small>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="stats-card text-center">
+                                <h2 class="text-success">{{ "%.2f"|format(performance.rmse) }}</h2>
+                                <p class="text-muted mb-0">RMSE</p>
+                                <small class="text-muted">Root Mean Square Error</small>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="stats-card text-center">
+                                {% set quality = "Excellent" if performance.r2_score > 0.8 else "Good" if performance.r2_score > 0.6 else "Fair" if performance.r2_score > 0.4 else "Poor" %}
+                                {% set quality_color = "success" if performance.r2_score > 0.8 else "warning" if performance.r2_score > 0.6 else "info" if performance.r2_score > 0.4 else "danger" %}
+                                <h2 class="text-{{ quality_color }}">{{ quality }}</h2>
+                                <p class="text-muted mb-0">Model Quality</p>
+                                <small class="text-muted">Based on R² Score</small>
+                            </div>
+                        </div>
+                    </div>
+                    {% else %}
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="stats-card text-center">
+                                <h2 class="text-primary">{{ "%.1f"|format(performance.accuracy * 100) }}%</h2>
+                                <p class="text-muted mb-0">Accuracy</p>
+                                <small class="text-muted">Correct Predictions</small>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="stats-card text-center">
+                                {% set quality = "Excellent" if performance.accuracy > 0.9 else "Good" if performance.accuracy > 0.8 else "Fair" if performance.accuracy > 0.7 else "Poor" %}
+                                {% set quality_color = "success" if performance.accuracy > 0.9 else "warning" if performance.accuracy > 0.8 else "info" if performance.accuracy > 0.7 else "danger" %}
+                                <h2 class="text-{{ quality_color }}">{{ quality }}</h2>
+                                <p class="text-muted mb-0">Model Quality</p>
+                                <small class="text-muted">Based on Accuracy</small>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="stats-card text-center">
+                                <h2 class="text-info">{{ feature_columns | length }}</h2>
+                                <p class="text-muted mb-0">Features</p>
+                                <small class="text-muted">Input Variables</small>
+                            </div>
+                        </div>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Feature List -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="mb-0">
+                        <i class="fas fa-list"></i> Features Used in Model
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        {% for feature in feature_columns %}
+                        <div class="col-md-4 col-lg-3">
+                            <span class="badge bg-primary me-2 mb-2">{{ feature }}</span>
+                        </div>
+                        {% endfor %}
+                    </div>
+                    <div class="mt-3">
+                        <p class="text-muted mb-0">
+                            <i class="fas fa-info-circle"></i> 
+                            These {{ feature_columns | length }} features were used to predict <strong>{{ target_column }}</strong>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Prediction Plots -->
+    {% if plots.predictions %}
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="plot-container">
+                <h5 class="mb-3">
+                    <i class="fas fa-chart-scatter"></i> Prediction Analysis
+                </h5>
+                <img src="data:image/png;base64,{{ plots.predictions }}" class="img-fluid" alt="Prediction Results">
+                <div class="mt-3">
+                    <p class="text-muted">
+                        <i class="fas fa-info-circle"></i> 
+                        Left plot shows actual vs predicted values. Points closer to the red line indicate better predictions.
+                        Right plot shows residuals - points should be randomly scattered around zero.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+
+    <!-- Feature Importance -->
+    {% if plots.feature_importance %}
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="plot-container">
+                <h5 class="mb-3">
+                    <i class="fas fa-chart-bar"></i> Feature Importance
+                </h5>
+                <img src="data:image/png;base64,{{ plots.feature_importance }}" class="img-fluid" alt="Feature Importance">
+                <div class="mt-3">
+                    <p class="text-muted">
+                        <i class="fas fa-info-circle"></i> 
+                        This chart shows which features have the most influence on predictions. 
+                        Higher values indicate more important features.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+
+    <!-- Model Interpretation -->
+    <div class="row mb-4">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="mb-0">
+                        <i class="fas fa-brain"></i> Model Interpretation
+                    </h5>
+                </div>
+                <div class="card-body">
+                    {% if performance.model_type == 'regression' %}
+                    <div class="mb-3">
+                        <h6>What the R² Score means:</h6>
+                        {% if performance.r2_score > 0.8 %}
+                        <div class="alert alert-success">
+                            <i class="fas fa-check-circle"></i> 
+                            <strong>Excellent model!</strong> Your model explains {{ "%.1f"|format(performance.r2_score * 100) }}% 
+                            of the variance in {{ target_column }}. This is a very strong predictive model.
+                        </div>
+                        {% elif performance.r2_score > 0.6 %}
+                        <div class="alert alert-warning">
+                            <i class="fas fa-thumbs-up"></i> 
+                            <strong>Good model!</strong> Your model explains {{ "%.1f"|format(performance.r2_score * 100) }}% 
+                            of the variance in {{ target_column }}. This provides useful predictions.
+                        </div>
+                        {% elif performance.r2_score > 0.4 %}
+                        <div class="alert alert-info">
+                            <i class="fas fa-info-circle"></i> 
+                            <strong>Fair model.</strong> Your model explains {{ "%.1f"|format(performance.r2_score * 100) }}% 
+                            of the variance in {{ target_column }}. Consider adding more features or data.
+                        </div>
+                        {% else %}
+                        <div class="alert alert-danger">
+                            <i class="fas fa-exclamation-triangle"></i> 
+                            <strong>Poor model.</strong> Your model only explains {{ "%.1f"|format(performance.r2_score * 100) }}% 
+                            of the variance. Try different features or more data.
+                        </div>
+                        {% endif %}
+                    </div>
+                    {% else %}
+                    <div class="mb-3">
+                        <h6>What the Accuracy means:</h6>
+                        {% if performance.accuracy > 0.9 %}
+                        <div class="alert alert-success">
+                            <i class="fas fa-check-circle"></i> 
+                            <strong>Excellent model!</strong> Your model correctly predicts {{ "%.1f"|format(performance.accuracy * 100) }}% 
+                            of the cases. This is a very strong classifier.
+                        </div>
+                        {% elif performance.accuracy > 0.8 %}
+                        <div class="alert alert-warning">
+                            <i class="fas fa-thumbs-up"></i> 
+                            <strong>Good model!</strong> Your model correctly predicts {{ "%.1f"|format(performance.accuracy * 100) }}% 
+                            of the cases. This provides reliable classifications.
+                        </div>
+                        {% elif performance.accuracy > 0.7 %}
+                        <div class="alert alert-info">
+                            <i class="fas fa-info-circle"></i> 
+                            <strong>Fair model.</strong> Your model correctly predicts {{ "%.1f"|format(performance.accuracy * 100) }}% 
+                            of the cases. Consider improving features or getting more data.
+                        </div>
+                        {% else %}
+                        <div class="alert alert-danger">
+                            <i class="fas fa-exclamation-triangle"></i> 
+                            <strong>Poor model.</strong> Your model only correctly predicts {{ "%.1f"|format(performance.accuracy * 100) }}% 
+                            of the cases. Try different features or algorithms.
+                        </div>
+                        {% endif %}
+                    </div>
+                    {% endif %}
+
+                    <div class="mb-3">
+                        <h6>Recommendations:</h6>
+                        <ul class="list-unstyled">
+                            {% if performance.model_type == 'regression' %}
+                                {% if performance.r2_score < 0.6 %}
+                                <li><i class="fas fa-plus text-primary"></i> Try adding more relevant features</li>
+                                <li><i class="fas fa-database text-info"></i> Collect more training data</li>
+                                <li><i class="fas fa-tools text-warning"></i> Consider feature engineering</li>
+                                {% else %}
+                                <li><i class="fas fa-check text-success"></i> Model is performing well</li>
+                                <li><i class="fas fa-rocket text-primary"></i> Ready for making predictions</li>
+                                {% endif %}
+                            {% else %}
+                                {% if performance.accuracy < 0.8 %}
+                                <li><i class="fas fa-plus text-primary"></i> Try adding more relevant features</li>
+                                <li><i class="fas fa-database text-info"></i> Collect more training data</li>
+                                <li><i class="fas fa-balance-scale text-warning"></i> Check for class imbalance</li>
+                                {% else %}
+                                <li><i class="fas fa-check text-success"></i> Model is performing well</li>
+                                <li><i class="fas fa-rocket text-primary"></i> Ready for making predictions</li>
+                                {% endif %}
+                            {% endif %}
+                            <li><i class="fas fa-chart-line text-secondary"></i> Validate on new data before deployment</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="mb-0">
+                        <i class="fas fa-download"></i> Export Results
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <div class="d-grid gap-2">
+                        <button class="btn btn-custom" onclick="downloadResults()">
+                            <i class="fas fa-download"></i> Download Model Report
+                        </button>
+                        <button class="btn btn-outline-primary" onclick="copyModelConfig()">
+                            <i class="fas fa-copy"></i> Copy Configuration
+                        </button>
+                        <a href="{{ url_for('predict_page', filename=filename) }}" class="btn btn-outline-secondary">
+                            <i class="fas fa-redo"></i> Train New Model
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card mt-3">
+                <div class="card-header">
+                    <h6 class="mb-0">
+                        <i class="fas fa-lightbulb"></i> Next Steps
+                    </h6>
+                </div>
+                <div class="card-body">
+                    <ul class="list-unstyled small">
+                        <li><i class="fas fa-check text-success"></i> Model is trained and ready</li>
+                        <li><i class="fas fa-chart-line text-info"></i> Analyze prediction patterns</li>
+                        <li><i class="fas fa-database text-warning"></i> Collect more data to improve</li>
+                        <li><i class="fas fa-cogs text-primary"></i> Fine-tune parameters</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+function downloadResults() {
+    const results = {
+        model_config: {
+            algorithm: "{{ model_type }}",
+            target: "{{ target_column }}",
+            features: {{ feature_columns | tojson }},
+            model_type: "{{ performance.model_type }}"
+        },
+        performance: {{ performance | tojson }},
+        timestamp: new Date().toISOString()
+    };
+    
+    const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(results, null, 2));
+    const downloadAnchorNode = document.createElement('a');
+    downloadAnchorNode.setAttribute("href", dataStr);
+    downloadAnchorNode.setAttribute("download", "model_results.json");
+    document.body.appendChild(downloadAnchorNode);
+    downloadAnchorNode.click();
+    downloadAnchorNode.remove();
+}
+
+function copyModelConfig() {
+    const config = {
+        algorithm: "{{ model_type }}",
+        target: "{{ target_column }}",
+        features: {{ feature_columns | tojson }}
+    };
+    
+    navigator.clipboard.writeText(JSON.stringify(config, null, 2)).then(function() {
+        alert('Model configuration copied to clipboard!');
+    });
+}
+</script>
+{% endblock %}

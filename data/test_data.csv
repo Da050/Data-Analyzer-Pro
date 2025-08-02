@@ -1,0 +1,101 @@
+age,income,education_years,experience_years,satisfaction_score,department,city,performance_rating,hire_date
+40,49213.12,15,2,,Finance,Phoenix,5,2022-11-29
+33,77246.6,15,1,8.6,Sales,Phoenix,3,2023-08-17
+42,128046.59,17,11,4.4,HR,Los Angeles,5,2020-08-11
+53,108324.69,17,13,8.8,Engineering,Los Angeles,2,2020-11-13
+32,108211.11,9,14,10.0,Engineering,New York,3,2020-12-14
+32,112003.38,11,4,5.8,Marketing,Phoenix,3,2020-04-24
+53,268108.12,15,3,,Finance,Chicago,3,2021-11-28
+44,153558.15,15,11,10.0,Engineering,Phoenix,2,2023-09-08
+29,118756.19,15,3,10.0,Finance,Chicago,4,2022-11-29
+41,229525.09,22,21,9.5,Engineering,Houston,4,2020-02-09
+29,53914.79,15,11,10.0,Sales,Phoenix,5,2023-08-05
+29,116112.68,17,4,8.3,HR,Houston,2,2023-07-09
+37,150825.9,16,11,6.1,Engineering,Los Angeles,4,2020-08-03
+18,311113.1,15,0,10.0,Finance,Los Angeles,3,2023-03-16
+18,75866.36,13,0,6.1,Sales,New York,3,2020-12-01
+28,164678.48,16,10,7.8,Engineering,Phoenix,3,2023-04-06
+22,89940.45,11,4,4.5,Marketing,Houston,3,2020-04-01
+38,79157.78,13,14,9.6,HR,Chicago,4,2020-12-18
+24,162694.7,12,3,10.0,Engineering,Los Angeles,3,2021-07-24
+18,126935.61,14,0,9.8,Sales,Los Angeles,3,2022-03-26
+52,186072.23,20,3,10.0,Marketing,Chicago,2,2022-02-19
+32,41485.24,8,0,10.0,Sales,Houston,2,2020-12-28
+35,352249.23,16,17,10.0,Sales,Houston,1,2021-07-10
+18,34232.42,9,0,6.4,Marketing,Phoenix,5,2023-09-30
+28,123210.29,12,3,9.7,Sales,Phoenix,1,2023-04-08
+36,557007.21,17,18,5.6,Marketing,New York,2,2020-12-21
+21,61081.39,14,3,2.7,Engineering,Los Angeles,3,2020-07-09
+39,71136.98,10,6,10.0,Marketing,Phoenix,4,2021-02-25
+27,108214.17,11,7,10.0,Marketing,Houston,5,2021-11-30
+31,88088.32,16,4,10.0,HR,Chicago,4,2020-01-07
+27,38635.07,11,2,,Marketing,Houston,4,2020-05-12
+57,103726.42,14,3,7.4,Marketing,Los Angeles,3,2021-07-10
+34,71738.95,14,8,10.0,Engineering,Houston,2,2022-04-05
+22,121488.53,12,4,10.0,HR,New York,5,2022-01-30
+44,110073.52,20,12,10.0,Finance,Los Angeles,4,2022-11-20
+20,216764.79,15,2,,Engineering,Chicago,4,2021-06-18
+37,44185.86,8,0,4.9,Engineering,New York,4,2021-03-01
+18,74193.96,14,0,10.0,Finance,Los Angeles,4,2021-11-02
+19,119996.27,12,0,10.0,Marketing,Chicago,4,2020-12-28
+37,66333.05,16,6,10.0,Sales,New York,5,2020-03-22
+43,102538.01,11,4,4.8,HR,New York,5,2020-12-21
+37,297053.08,13,17,10.0,Sales,Los Angeles,4,2023-07-05
+33,46737.92,15,3,10.0,Finance,Phoenix,4,2021-08-11
+31,103551.92,16,0,9.6,Engineering,New York,2,2020-10-21
+18,82709.4,10,0,6.5,Engineering,New York,4,2023-06-01
+26,165353.52,12,8,9.8,HR,Chicago,1,2022-12-05
+29,58109.63,12,7,5.0,Engineering,Houston,3,2023-02-10
+47,41283.95,12,0,6.1,Engineering,Los Angeles,5,2023-06-10
+39,136718.8,19,0,8.9,HR,Los Angeles,3,2020-01-17
+18,105322.58,15,0,9.7,HR,Phoenix,3,2020-12-25
+38,82322.0,10,0,8.0,Finance,Phoenix,3,2023-05-31
+30,179645.22,16,12,8.1,Engineering,Los Angeles,2,2022-05-15
+26,108561.51,20,8,9.6,Engineering,Phoenix,4,2021-11-30
+42,110125.8,17,0,10.0,Finance,Chicago,2,2021-03-23
+47,79888.73,9,0,4.8,Marketing,Los Angeles,2,2022-05-05
+46,134154.9,12,28,7.2,Marketing,Phoenix,3,2020-12-30
+24,286616.67,17,3,10.0,Marketing,Los Angeles,4,2021-11-05
+31,111147.76,11,3,6.8,Finance,Houston,4,2022-10-04
+38,82571.04,15,13,6.6,Engineering,New York,2,2023-09-11
+46,281885.46,16,23,9.9,Finance,Los Angeles,3,2021-04-11
+29,72609.53,11,11,8.0,Finance,New York,3,2021-02-17
+32,191895.52,13,11,10.0,Marketing,Phoenix,4,2021-08-08
+21,134167.78,8,3,4.9,Sales,New York,4,2023-06-10
+20,48185.14,10,0,8.6,Engineering,Los Angeles,3,2023-06-01
+44,216338.77,13,12,10.0,Marketing,Houston,3,2022-09-20
+51,116064.56,10,6,10.0,Sales,Phoenix,3,2021-07-25
+34,184051.53,18,4,9.9,Sales,Los Angeles,4,2020-11-30
+47,338440.73,9,18,7.5,HR,Phoenix,3,2023-05-30
+39,70669.07,12,0,2.3,Engineering,Chicago,3,2020-02-06
+27,74738.02,14,5,4.0,Sales,New York,3,2022-09-15
+39,65177.02,18,0,10.0,Marketing,Chicago,3,2020-10-04
+53,57359.42,9,5,6.6,HR,Los Angeles,4,2023-05-04
+34,94343.81,17,0,9.0,Engineering,Houston,3,2022-07-04
+53,108535.75,14,1,10.0,Finance,Phoenix,4,2021-04-28
+18,87577.79,11,0,9.8,Marketing,New York,4,2023-06-19
+44,192212.07,15,8,5.7,Sales,Phoenix,3,2023-09-09
+36,131588.48,14,10,10.0,Sales,Los Angeles,3,2021-12-31
+31,223089.65,12,7,10.0,Marketing,Phoenix,4,2020-07-10
+36,145073.27,14,18,6.3,Sales,New York,3,2022-11-06
+18,311309.21,12,0,10.0,HR,Los Angeles,3,2021-06-07
+32,131086.49,14,2,6.8,Engineering,Phoenix,5,2022-07-06
+39,106457.23,15,16,,HR,Houston,1,2021-02-04
+52,65478.91,18,2,9.1,Sales,Los Angeles,2,2022-06-04
+28,138669.47,10,10,6.4,Finance,Los Angeles,3,2021-12-05
+25,97429.17,20,0,7.2,Engineering,Houston,5,2020-01-22
+28,140119.66,8,10,6.6,Engineering,Chicago,2,2021-04-18
+45,105823.5,13,0,7.2,Marketing,New York,1,2023-02-17
+38,161953.08,15,17,7.1,Marketing,Chicago,2,2020-07-28
+28,74193.82,14,6,10.0,Finance,Phoenix,2,2020-11-01
+41,80539.38,12,23,4.9,Engineering,Houston,1,2023-07-17
+36,66812.91,13,0,10.0,Finance,Chicago,3,2021-12-04
+46,159375.93,12,6,10.0,Marketing,Los Angeles,3,2021-11-17
+26,124489.48,12,8,2.9,Marketing,Phoenix,3,2020-10-11
+31,63309.18,16,5,10.0,Engineering,Phoenix,3,2021-12-16
+30,133650.81,15,7,9.6,HR,Chicago,2,2022-02-01
+18,92465.98,11,0,8.9,Sales,Chicago,3,2023-06-04
+38,72831.53,16,4,10.0,Marketing,Houston,3,2022-08-05
+38,127062.69,14,7,9.2,Marketing,New York,4,2021-01-15
+35,131231.79,16,7,7.9,HR,Chicago,1,2021-04-04
+32,87154.16,15,14,10.0,HR,Chicago,3,2022-10-27
